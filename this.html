@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <meta charset="utf-8">
+  <title>Vue 测试实例 (runoob.com)</title>
+  <script src="https://unpkg.com/vue/dist/vue.js"></script>
+</head>
+
+<body>
+  <div id="app">
+    <p>{{ message }}</p>
+  </div>
+  ​
+  <script>
+    Vue.prototype.$reverseText = (propertyName) => {
+      console.log(this) //Window  window下有Vue: ƒ Vue(options)  
+      //箭头函数其绑定的上下文(上下文，对于普通函数，当通过这个对象来调用函数时，该对象就是此次调用上下文(context)，也就是该函数的this的值）不会正常工作，因为它们会隐式地绑定其父级作用域。
+      //Vue实例的父级就是window,箭头函数中this指向父级作用域，即是window
+      //由于箭头函数不绑定this， 它会捕获其所在（即定义的位置）上下文的this值， 作为自己的this值，
+      this[propertyName] = this[propertyName]
+        .split('')
+        .reverse()
+        .join('')
+    }
+    new Vue({
+      el: '#app',
+      data: {
+        message: 'Hello Vue.js!'
+      },
+      created: function () {
+        console.log(this.message) //Hello Vue.js!
+        this.$reverseText('message')
+        console.log(this.message) //Error in created hook: "TypeError: Cannot read property 'split' of undefined"
+      }
+    })
+
+    var obj = {
+      i: 10,
+      b: () => console.log(this.i, this),
+      c: function () {
+        console.log(this.i, this)
+      }
+    }
+    obj.b() //undefined   Window
+    obj.c() //10   Object{i: 10, b: ƒ, c: ƒ}
+    //可以看到，作为方法的箭头函数this指向全局window对象，而普通函数则指向调用它的对象
+  </script>
+</body>
+
+</html>

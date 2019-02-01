@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <meta charset="utf-8">
+  <title>一个全局的 App 对象(runoob.com)</title>
+  <script src="https://unpkg.com/vue/dist/vue.js"></script>
+</head>
+
+<body>
+  <div id="app">
+    <p>{{ message }}</p>
+    <h1 id="h1"></h1>
+    <p>{{reverseText(message)}}</p>
+    <p>{{test2(version)}}</p>
+    <p>{{test1(version)}}</p>
+    <p>{{test(version)}}</p>
+    <button @click="test(version)">方法调用test{{version}}</button>
+    <button @click="test0(version)">方法调用test0{{version}}</button>
+  </div>
+  ​
+  <script>
+    // 有的时候它会让其他开发者感到混乱。例如他们可能看到了 this.$http，然后会想“哦，我从来没见过这个 Vue 的功能”，然后他们来到另外一个项目又发现 this.$http 是未被定义的。或者你打算去搜索如何使用它，但是搜不到结果，因为他们并没有发现这是一个 axios 的别名。
+    // 这种便利是以显性表达为代价的。当我们查阅一个组件的时候，要注意交代清楚 $http 是从哪来的：Vue 自身、一个插件、还是一个辅助库？
+    // 那么有别的替代方案吗？
+
+    //在没有模块系统 (比如 webpack 或 Browserify) 的应用中，存在一种任何重 JS 前端应用都常用的模式：一个全局的 App 对象。
+    //如果你想要添加的东西跟 Vue 本身没有太多关系，那么这是一个不错的替代方案。举个例子：
+    var App = Object.freeze({ //Object.freeze，它做的事情是阻止这个对象在未来被修改。这实质上是将它的属性都设为了常量，避免在未来出现状态的 bug。
+      name: 'My App',
+      version: '2.1.4',
+      helpers: {
+        // 这我们之前见到过的 `$reverseText` 方法
+        // 的一个纯函数版本
+        reverseText: function (text) {
+          return text
+            .split('')
+            .reverse()
+            .join('')
+        }
+      }
+    })
+    document.getElementById('h1').innerHTML = App.version
+    new Vue({
+      el: '#app',
+      data: {
+        message: App.name,
+        version: App.version
+      },
+      methods: {
+        // test() {
+        //   App.helpers.reverseText //错误写法，函数套函数，要是函数体执行代码
+        // },
+        test(n) {
+          console.log(n) //2.1.4  事件调用传过来的数据
+          return App.helpers.reverseText(n)
+        },
+        test0(n) {
+          console.log(n) //2.1.4  事件调用传过来的数据
+          //return this.version = App.helpers.reverseText(n) 
+          this.version = App.helpers.reverseText(n)
+          //赋值了变量，可以改变原始数据version，将函数执行后的值赋值给了变量，可以改变原始变量的值   
+          //若像test那样return App.helpers.reverseText(n),函数在被点击调用时，会得到一个返回值，就是函数执行后的值，
+          //但并不会改变原始数据，只是在函数执行后得到的一个返回值而已，通过{{test(version)}}执行后可以显示在页面  
+          //return不用
+        },
+        test1: function (n) { //函数  //函数形参
+          return App.helpers.reverseText(n) //函数体  //必须要加return  函数才有返回值
+        },
+        //App.helpers.reverseText 就是一个函数
+        test2: App.helpers.reverseText, //test2是一个函数，所以App.helpers.reverseText不能加括号，加了括号函数就执行，即是执行后的结果，是字符串而非function
+        reverseText: App.helpers.reverseText
+      },
+      mounted() {
+        console.log(this.version)
+      },
+      // updated() {
+      //   console.log(this.version)
+      // },
+      created() {
+        console.log(this.version)
+      },
+    })
+    //现在这些被共享的属性的来源就更加明显了：在应用中的某个地方有一个被定义好的 App 对象。你只需在项目中搜索就可以找到它。
+
+    //这样做的另一个好处是 App 可以在你代码的任何地方使用，不管它是否是 Vue 相关的。包括向实例选项直接附加一些值而不必进入一个函数去访问 this 上的属性来得到这些值：
+  </script>
+</body>
+
+</html>
