@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <script src="https://unpkg.com/vue/dist/vue.js"></script>
+  <title>Document</title>
+</head>
+
+<body>
+  <div id="root">
+    <p ref="test">{{msg}}</p>
+    <p>{{msg1}}</p>
+    <p>{{msg2}}</p>
+    <p>{{msg3}}</p>
+    <h2>{{msg4}}</h2>
+    <button @click="change">change</button>
+  </div>
+  <script>
+    new Vue({
+      el: '#root',
+      data() {
+        return {
+          msg: 'hello vue',
+          msg1: '',
+          msg2: '',
+          msg3: '',
+          msg4: ''
+        }
+      },
+      methods: {
+        change() {
+          this.msg = "kobe"
+          this.msg1 = this.$refs.test.innerHTML
+          //在修改数据之后立即使用这个方法，获取更新后的 DOM。
+          this.$nextTick(() => {
+            console.log(this) //Vue
+            this.msg2 = this.$refs.test.innerHTML
+          })
+          this.msg3 = this.$refs.test.innerHTML
+          //setTimeout(this.msg4 = this.$refs.test.innerHTML, 0)
+          setTimeout(() => {
+            this.msg4 = this.$refs.test.innerHTML //kobe  第一个参数为函数
+          }, 0)
+          //$nextTick是vue的DOM更新队列的下一个tick完成时触发，也是能够确保DOM更新完毕，实际上原理是Promise实现，
+          //在浏览器不支持Promise的情况下才会退化到setTimeout(fn,0)
+        }
+      },
+    })
+    /**
+    msg1和msg3显示的内容还是变换之前的，而msg2显示的内容是变换之后的。
+    其根本原因是因为Vue中DOM更新是异步的
+    Vue 异步执行 DOM 更新。只要观察到数据变化，Vue 将开启一个队列，并缓冲在同一事件循环中发生的所有数据改变。如果同一个 watcher 被多次触发，只会被推入到队列中一次。
+    这种在缓冲时去除重复数据对于避免不必要的计算和 DOM 操作上非常重要。然后，在下一个的事件循环“tick”中，
+    Vue 刷新队列并执行实际 (已去重的) 工作。Vue 在内部尝试对异步队列使用原生的 Promise.then 和MessageChannel，
+    如果执行环境不支持，会采用 setTimeout(fn, 0)代替
+    **/
+  </script>
+</body>
+
+</html>
