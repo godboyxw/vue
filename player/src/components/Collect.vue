@@ -1,56 +1,73 @@
 <template>
-  <div>
-    <el-radio-group v-model="musicType"
-                    size="medium"
-                    @change="typeChange">
-      <el-radio-button label="1">新歌榜</el-radio-button>
-      <el-radio-button label="2">热歌榜</el-radio-button>
-      <el-radio-button label="11">摇滚榜</el-radio-button>
-      <el-radio-button label="12">爵士</el-radio-button>
-      <el-radio-button label="16">流行</el-radio-button>
-      <el-radio-button label="21">欧美金曲榜</el-radio-button>
-      <el-radio-button label="22">经典老歌榜</el-radio-button>
-      <el-radio-button label="23">情歌对唱榜</el-radio-button>
-      <el-radio-button label="24">影视金曲榜</el-radio-button>
-      <el-radio-button label="25">网络歌曲榜</el-radio-button>
-    </el-radio-group>
-    <ul v-if="!ifSearch"
-        class="geBan">
-      <li v-for="(item,index) in jsonpData"
-          class="lists"
-          :key="index">
-        <div class="port-1 effect-1">
-          <div class="image-box">
-            <img :src="item.pic_premium"
-                 alt="pic_premium">
+  <div class="wrapper">
+    <bgCanvas></bgCanvas>
+    <div class="content">
+      <el-radio-group v-model="musicType"
+                      size="medium"
+                      class="group"
+                      @change="typeChange">
+        <el-radio-button label="1"
+                         class="btn">新歌榜</el-radio-button>
+        <el-radio-button label="2"
+                         class="btn">热歌榜</el-radio-button>
+        <el-radio-button label="11"
+                         class="btn">摇滚榜</el-radio-button>
+        <el-radio-button label="12"
+                         class="btn">爵士</el-radio-button>
+        <el-radio-button label="16"
+                         class="btn">流行</el-radio-button>
+        <el-radio-button label="21"
+                         class="btn">欧美金曲榜</el-radio-button>
+        <el-radio-button label="22"
+                         class="btn">经典老歌榜</el-radio-button>
+        <el-radio-button label="23"
+                         class="btn">情歌对唱榜</el-radio-button>
+        <el-radio-button label="24"
+                         class="btn">影视金曲榜</el-radio-button>
+        <el-radio-button label="25"
+                         class="btn">网络歌曲榜</el-radio-button>
+      </el-radio-group>
+      <ul v-if="!ifSearch"
+          class="model">
+        <li v-for="(item,index) in jsonpData"
+            class="lists"
+            :key="index">
+          <div class="port-1 effect-1">
+            <div class="image-box">
+              <img :src="item.pic_premium"
+                   alt="pic_premium"
+                   class="lists-img">
+            </div>
+            <div class="text-desc">
+              <h3>{{item.title}}</h3>
+              <p>歌手：{{item.author}}
+                <span style="padding-left:5px">语言：{{item.language}}</span> </p>
+              <p>热度：{{item.hot}}</p>
+              <a href="javascript:void(0)"
+                 @click="playMusic(item.song_id)"
+                 class="btn">播放</a>
+              <a href="javascript:void(0)"
+                 class="btn">添加</a>
+              <a href="javascript:void(0)"
+                 class="btn">下载</a>
+            </div>
           </div>
-          <div class="text-desc">
-            <h3>{{item.title}}</h3>
-            <p>歌手：{{item.author}}
-              <span style="padding-left:5px">语言：{{item.language}}</span> </p>
-            <p>热度：{{item.hot}}</p>
-            <a href="javascript:void(0)"
-               @click="playMusic(item.song_id)"
-               class="btn">播放</a>
-            <a href="javascript:void(0)"
-               class="btn">添加</a>
-            <a href="javascript:void(0)"
-               class="btn">下载</a>
-          </div>
-        </div>
-      </li>
-    </ul>
-    <div class="audioUrl"
-         v-show="audioShow">
-      <audio :src="musicUrl"
-             controls="controls"
-             autoplay="autoplay"></audio>
+        </li>
+      </ul>
+      <div class="audioUrl">
+        <audio src="http://sc1.111ttt.cn/2018/1/03/13/396131232171.mp3"
+               controls="controls"></audio>
+      </div>
     </div>
   </div>
 </template>
 
 <script>
+import bgCanvas from './canvas'
 export default {
+  components: {
+    bgCanvas
+  },
   data () {
     return {
       ifSearch: false,
@@ -112,10 +129,50 @@ export default {
 </script>
 
 <style scoped>
-.geBan {
+.content {
+  padding-top: 30px;
+  width: 750px;
+  position: absolute;
+  top: 0;
+  left: 50%;
+  margin-left: -375px;
+  /**background-color: rgba(255, 255, 255, 0.3);**/
+}
+.group {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  align-items: center;
+  margin-bottom: 30px;
+}
+.btn {
+  margin: 5px 10px 5px 0;
+}
+.lists-img {
+  width: 500px;
+  height: 500px;
+}
+.model {
   list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
 }
 .lists {
   margin-bottom: 40px;
+}
+h3,
+p,
+a {
+  color: #fff;
+}
+a {
+  text-decoration: none;
+  display: inline-block;
+}
+a {
+  color: orange;
 }
 </style>
