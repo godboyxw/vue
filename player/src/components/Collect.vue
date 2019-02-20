@@ -47,6 +47,7 @@
                  @click="playMusic(item.song_id)"
                  class="btn">播放</a>
               <a href="javascript:void(0)"
+                 @click="addMusic(item)"
                  class="btn">添加</a>
               <a href="javascript:void(0)"
                  class="btn">下载</a>
@@ -55,7 +56,7 @@
         </li>
       </ul>
       <div class="audioUrl">
-        <audio src="http://sc1.111ttt.cn/2018/1/03/13/396131232171.mp3"
+        <audio :src="musicUrl"
                controls="controls"></audio>
       </div>
     </div>
@@ -64,6 +65,7 @@
 
 <script>
 import bgCanvas from './canvas'
+import axios from 'axios'
 export default {
   components: {
     bgCanvas
@@ -120,6 +122,24 @@ export default {
         // this.musicUrl = 'http://sc1.111ttt.cn/2018/1/03/13/396131232171.mp3'
         console.log(this.musicUrl)
       })
+    },
+    addMusic (item) {
+      let datas = {
+        song_id: item.song_id,
+        author: item.author,
+        title: item.title,
+        hot: item.hot
+      }
+      axios.post('/music/collect', datas).then(data => {
+        console.log(data)
+        if (data.data.states === 1) {
+          // Element 为 Vue.prototype 添加了全局方法 $message。因此在 vue instance 中可以采用本页面中的方式调用 Message。
+          this.$message({
+            message: '收藏成功',
+            type: 'success'
+          })
+        }
+      })
     }
   },
   mounted () {
@@ -143,6 +163,7 @@ export default {
   flex-wrap: wrap;
   justify-content: center;
   align-items: center;
+  padding: 0 10px 0 10px;
   margin-bottom: 30px;
 }
 .btn {
