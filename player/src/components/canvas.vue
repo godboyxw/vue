@@ -59,13 +59,13 @@ export default {
         // console.log(data[i].x, data[i].y)
         createArc(data[i].x, data[i].y)
         for (let j = i + 1; j < num; j++) {
-          if (Math.pow(data[i].x - data[j].x, 2) + Math.pow(data[i].y - data[j].y, 2) < w / 7 * w / 7) {
+          if (Math.pow(data[i].x - data[j].x, 2) + Math.pow(data[i].y - data[j].y, 2) < w / 9 * w / 9) {
             createLine(data[i].x, data[i].y, data[j].x, data[j].y)
           }
         }
       }
       for (let j = 0; j < num; j++) {
-        if (Math.pow(clientX - data[j].x, 2) + Math.pow(clientY - data[j].y, 2) < w / 7 * w / 7) {
+        if (Math.pow(clientX - data[j].x, 2) + Math.pow(clientY - data[j].y, 2) < w / 9 * w / 9) {
           createLine(clientX, clientY, data[j].x, data[j].y)
         }
       }

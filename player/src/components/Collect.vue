@@ -1,6 +1,5 @@
 <template>
   <div class="wrapper">
-    <bgCanvas></bgCanvas>
     <div class="content">
       <el-radio-group v-model="musicType"
                       size="medium"
@@ -50,6 +49,9 @@
                  @click="addMusic(item)"
                  class="btn">添加</a>
               <a href="javascript:void(0)"
+                 @click="likeMusic(item)"
+                 class="btn">喜欢</a>
+              <a href="javascript:void(0)"
                  class="btn">下载</a>
             </div>
           </div>
@@ -64,11 +66,10 @@
 </template>
 
 <script>
-import bgCanvas from './canvas'
 import axios from 'axios'
 export default {
   components: {
-    bgCanvas
+
   },
   data () {
     return {
@@ -153,7 +154,7 @@ export default {
   padding-top: 30px;
   width: 750px;
   position: absolute;
-  top: 0;
+  top: 150px;
   left: 50%;
   margin-left: -375px;
   /**background-color: rgba(255, 255, 255, 0.3);**/

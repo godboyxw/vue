@@ -21,7 +21,8 @@ app.use(express.urlencoded({
 app.use(cookieParser())
 app.use(express.static(path.join(__dirname, 'public')))
 
-app.use('/', indexRouter)
+app.use('/', indexRouter) // 它的作用是规定路径为“/”的 GET 请求由 routes.index 函数处理。
+app.use('/time', indexRouter)
 app.use('/users', usersRouter)
 app.use('/music', musicRouter) // 这样我们就可以在前端通过 / music / collect来请求我们的添加收藏接口
 // catch 404 and forward to error handler
@@ -41,3 +42,9 @@ app.use(function (err, req, res, next) {
 })
 
 module.exports = app
+/**
+ 服务器在开始监听之前，设置好了所有的路由规则，当请求到达时直接分配到响应函数。
+app.get 是路由规则创建函数，它接受两个参数，第一个参数是请求的路径，第二个参数
+是一个回调函数，该路由规则被触发时调用回调函数，其参数表传递两个参数，分别是 req
+和 res，表示请求信息和响应信息。
+ **/
