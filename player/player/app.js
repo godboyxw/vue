@@ -7,6 +7,7 @@ var logger = require('morgan')
 var indexRouter = require('./routes/index')
 var usersRouter = require('./routes/users')
 var musicRouter = require('./routes/music')
+var handleRouter = require('./routes/user')
 var app = express()
 
 // view engine setup
@@ -25,6 +26,7 @@ app.use('/', indexRouter) // 它的作用是规定路径为“/”的 GET 请求
 app.use('/time', indexRouter)
 app.use('/users', usersRouter)
 app.use('/music', musicRouter) // 这样我们就可以在前端通过 / music / collect来请求我们的添加收藏接口
+app.use('/music', handleRouter)
 // catch 404 and forward to error handler
 app.use(function (req, res, next) {
   next(createError(404))

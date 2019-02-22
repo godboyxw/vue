@@ -3,6 +3,7 @@ import Router from 'vue-router'
 import Collect from '@/components/Collect'
 import collections from '@/components/collections'
 import mine from '@/components/mine'
+import user from '@/components/user'
 
 Vue.use(Router)
 
@@ -21,6 +22,11 @@ export default new Router({
     path: '/mine',
     name: 'mine',
     component: mine
+  },
+  {
+    path: '/user',
+    name: 'user',
+    component: user
   }
   ]
 })

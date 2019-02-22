@@ -4,6 +4,7 @@
       <div class="songs">歌曲</div>
       <div class="singer">歌手</div>
       <div class="hot">热度</div>
+      <div class="cancel">取消收藏</div>
     </div>
     <div class="lists">
       <div class="item"
@@ -12,6 +13,9 @@
         <div class="item-song">{{item.title}}</div>
         <div class="item-singer">{{item.author}}</div>
         <div class="item-hot">{{item.hot}}</div>
+        <i class="iconfont icon-cancelCollection"
+           :class="index === key ? 'active' :''"
+           @click="cancelCollection(index,item.song_id)"></i>
       </div>
     </div>
   </div>
@@ -22,15 +26,38 @@ import axios from 'axios'
 export default {
   data () {
     return {
-      musicList: [] // 保存获取收藏列表数据
+      musicList: [], // 保存获取收藏列表数据
+      key: ''
+    }
+  },
+  methods: {
+    cancelCollection (index, songId) {
+      // this.key = index
+      let datas = { song_id: songId }
+      axios.post('/music/cancel', datas).then(res => {
+        console.log(res)
+        if (res.data.states === 1) {
+          this.$message({
+            type: 'success',
+            message: '取消收藏成功',
+            showClose: true,
+            center: true,
+            duration: 1500
+          })
+          this.getCollection()
+        }
+      })
+    },
+    getCollection () {
+      let datas = {}
+      axios.post('/music/list', datas).then(res => {
+        console.log(res)
+        this.musicList = res.data.msg
+      })
     }
   },
   mounted () {
-    let datas = {}
-    axios.post('/music/list', datas).then(res => {
-      console.log(res)
-      this.musicList = res.data.msg
-    })
+    this.getCollection()
   }
 }
 </script>
@@ -77,5 +104,13 @@ export default {
   flex: 1;
   font-size: 16px;
   color: skyblue;
+}
+.icon-cancelCollection {
+  flex: 1;
+  font-size: 16px;
+  color: skyblue;
+}
+.active {
+  color: #fff;
 }
 </style>

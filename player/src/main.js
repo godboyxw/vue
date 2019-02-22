@@ -6,6 +6,7 @@ import router from './router'
 import ElementUI from 'element-ui'
 import VueJsonp from 'vue-jsonp'
 import 'element-ui/lib/theme-chalk/index.css'
+import '@/assets/styles/iconfont.css'
 Vue.use(ElementUI)
 Vue.use(VueJsonp)
 Vue.config.productionTip = false

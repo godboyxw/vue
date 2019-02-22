@@ -47,10 +47,7 @@
                  class="btn">播放</a>
               <a href="javascript:void(0)"
                  @click="addMusic(item)"
-                 class="btn">添加</a>
-              <a href="javascript:void(0)"
-                 @click="likeMusic(item)"
-                 class="btn">喜欢</a>
+                 class="btn">收藏</a>
               <a href="javascript:void(0)"
                  class="btn">下载</a>
             </div>
@@ -137,7 +134,10 @@ export default {
           // Element 为 Vue.prototype 添加了全局方法 $message。因此在 vue instance 中可以采用本页面中的方式调用 Message。
           this.$message({
             message: '收藏成功',
-            type: 'success'
+            type: 'success',
+            showClose: true,
+            center: true,
+            duration: 1500
           })
         }
       })

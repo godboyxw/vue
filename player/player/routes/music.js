@@ -77,5 +77,17 @@ Router.post('/list', function (req, res, next) {
     }
   })
 })
+
+Router.post('/cancel', function (req, res, next) {
+  musicModel.remove({
+    song_id: req.body.song_id
+  }, function (err, doc) {
+    if (err) return console.error(err)
+    console.log(doc)
+    res.json({
+      states: 1,
+      msg: doc
+    })
+  })
+})
 module.exports = Router // 暴露出路由
-console.log(Router)

@@ -6,8 +6,11 @@
                    class="home">我的首页</router-link>
       <router-link to="/collections"
                    class="collections">我的收藏</router-link>
-      <router-link to="/mine"
-                   class="likes">个人中心</router-link>
+      <!-- <router-link to="/mine"
+                   @click="user"
+                   class="likes">个人中心</router-link> -->
+      <div @click="user"
+           class="likes">个人中心</div>
     </div>
     <router-view />
   </div>
@@ -19,6 +22,15 @@ export default {
   name: 'App',
   components: {
     bgCanvas
+  },
+  methods: {
+    user () {
+      console.log(this.$route)
+      this.$router.push('/mine')
+      this.$router.beforeEach((to, from, next) => {
+        console.log(to, from)
+      })
+    }
   }
 }
 </script>
