@@ -45,12 +45,17 @@
               class="btn2"
               @click='loginSub'>登录</button>
     </div>
+    <lottery></lottery>
   </div>
 </template>
 
 <script>
 import axios from 'axios'
+import lottery from './lottery'
 export default {
+  components: {
+    lottery
+  },
   data () {
     return {
       text1: '',
