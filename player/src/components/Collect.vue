@@ -100,7 +100,7 @@ export default {
       this.commonParams.type = this.musicType
       // 合并对象
       const dataMusic = Object.assign({}, this.commonParams, this.dataObj)
-      this.$jsonp(this.api, dataMusic).then(json => {
+      axios.get(this.api, dataMusic).then(json => {
         console.log(json)
         this.jsonpData = json.song_list
         // this.loading = false

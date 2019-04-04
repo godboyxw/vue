@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>Document</title>
+  <script src="https://cdn.staticfile.org/vue/2.2.2/vue.min.js"></script>
+  <script src="https://unpkg.com/vuex@3.1.0/dist/vuex.js"></script>
+  <style>
+    #app {
+      width: 200px;
+      height: 200px;
+    }
+  </style>
+</head>
+
+<body>
+  <div id="app">
+    <!-- {{calc000}} <br> -->
+    {{store.state}} <br>
+    {{calc}}
+    <test></test>
+    <button @click="increment22">click</button>
+  </div>
+  <script>
+    const store = new Vuex.Store({
+      state: {
+        count: 0
+      },
+      mutations: {
+        increasement(state) {
+          state.count++
+        }
+      }
+    })
+    console.log(store.state) //{count:0}   //{count:1}    通过 store.state 来获取状态对象
+    store.commit('increasement') //通过 store.commit 方法触发状态变更
+    console.log(store.state) //{count:1}
+    console.log(store)
+
+
+    var test = {
+      // state
+      data() {
+        return {
+          count: 0
+        }
+      },
+      // view
+      template: `
+    <div>{{ count }} {{calc000}}</div>
+  `,
+      // actions
+      methods: {
+        increment() {
+          this.count++
+        }
+      },
+      computed: {
+        calc000() {
+          return this.$store.state.count
+        }
+      }
+
+    }
+
+
+
+
+
+    const vm = new Vue({
+      el: '#app',
+      components: {
+        test
+      },
+      store, //通过在根实例中注册 store 选项，该 store 实例会注入到根组件下的所有子组件中，且子组件能通过 this.$store 访问到
+      methods: {
+        increment22() {
+          // this.count++
+          console.log('click')
+          this.$store.count++
+          this.$store.commit('increasement')
+        }
+      },
+      computed: {
+        calc() {
+          return this.$store.state.count
+        }
+      }
+    })
+    console.log(vm, test)
+  </script>
+</body>
+
+</html>

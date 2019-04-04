@@ -52,6 +52,7 @@
 <script>
 import axios from 'axios'
 import lottery from './lottery'
+import { EventBus } from '../util/vue-bus'
 export default {
   components: {
     lottery
@@ -63,7 +64,8 @@ export default {
       text2: '',
       password2: '',
       showReg: false,
-      showlogin: false
+      showlogin: false,
+      isLogin: false
     }
   },
   methods: {
@@ -122,7 +124,9 @@ export default {
               duration: 1500
             })
             this.$router.push('/user')
+            this.isLogin = true
             console.log(this.$route)
+            EventBus.$emit('isLogin', this.isLogin)
           } else {
             console.log(res)
             this.$message({
