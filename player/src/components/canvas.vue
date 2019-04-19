@@ -10,7 +10,7 @@ export default {
   mounted () {
     let w
     let h
-    let num = 350 // 定义全局变量
+    let num = 500 // 定义全局变量
     const canvas = document.getElementById('canvas')
     const ctx = canvas.getContext('2d') // 画笔
     let data = [] // 将循环生产的每个粒子的特性保存在一个全局变量里面，所有函数均可以访问到全局变量  存储粒子的属性数据
